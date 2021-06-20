@@ -43,7 +43,10 @@ const Room = (props) => {
                         peerID: userId,
                         peer,
                     })
-                    peers.push(peer);
+                    peers.push({
+                        peerID: userId,
+                        peer
+                    });
                 })
                 setPeers(peers);
             })
@@ -55,12 +58,28 @@ const Room = (props) => {
                     peer,
                 })
 
-                setPeers(users => [...users, peer]);
+                const Obj = {
+                    peer, 
+                    peerID: payload.callerID
+                }
+
+                setPeers(users => [...users, Obj]);
             });
 
             socketRef.current.on("receiving returned signal", payload => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
+            });
+
+            socketRef.current.on("user left", id => {
+                const Obj = peersRef.current.find(p => p.peerID===id);
+                if(Obj){
+                    Obj.peer.destroy();
+                }
+
+                const peers = peersRef.current.filter(p => p.peerID!==id);
+                peersRef.current = peers;
+                setPeers(peers);
             });
         })
     }, []);
@@ -98,9 +117,9 @@ const Room = (props) => {
     return (
         <div className="container">
             <video className ="styled" muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer, index) => {
+            {peers.map((peer) => {
                 return (
-                    <Video key={index} peer={peer} />
+                    <Video key={peer.peerID} peer={peer.peer} />
                 );
             })}
         </div>
