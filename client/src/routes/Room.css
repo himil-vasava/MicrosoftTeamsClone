@@ -7,6 +7,10 @@
     flex-wrap: wrap;
 }
 
+.buttons{
+    height:5vh;
+}
+
 .styled{
     height: 40%;
     width: 50%;

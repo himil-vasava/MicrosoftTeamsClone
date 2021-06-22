@@ -30,11 +30,13 @@ const Room = (props) => {
     const peersRef = useRef([]);
     const roomId = props.match.params.roomId;
 
+
     useEffect(() => {
         socketRef.current = io.connect("/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomId);
+            //Receive data of all users from the server and then add them to the array
             socketRef.current.on("all users", users => {
                 const peers = [];
                 users.forEach(userId => {
@@ -70,7 +72,8 @@ const Room = (props) => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
-
+            
+            //The peer is destroyed or deleted from the array and thus removed from the room
             socketRef.current.on("user left", id => {
                 const Obj = peersRef.current.find(p => p.peerID===id);
                 if(Obj){
@@ -90,7 +93,7 @@ const Room = (props) => {
             trickle: false,
             stream,
         });
-
+        
         peer.on("signal", signal => {
             socketRef.current.emit("sending signal", { userToSignal, callerID, signal })
         })
@@ -105,6 +108,7 @@ const Room = (props) => {
             stream,
         })
 
+        //After receiving the signal, it is returned back
         peer.on("signal", signal => {
             socketRef.current.emit("returning signal", { signal, callerID })
         })
@@ -114,14 +118,23 @@ const Room = (props) => {
         return peer;
     }
 
+    function Exit(){
+        props.history.push(`/`);
+        window.location.reload();
+    }
+
     return (
-        <div className="container">
-            <video className ="styled" muted ref={userVideo} autoPlay playsInline />
-            {peers.map((peer) => {
-                return (
-                    <Video key={peer.peerID} peer={peer.peer} />
-                );
-            })}
+        <div>
+            <div className="container">
+                <video className ="styled" muted ref={userVideo} autoPlay playsInline />
+                {peers.map((peer) => {
+                    return (
+                        <Video key={peer.peerID} peer={peer.peer} />
+                    );
+                })}
+            </div>
+            
+            <button onClick={Exit} type="button" className="buttons">EXIT</button>
         </div>
     );
 };
