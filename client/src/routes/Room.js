@@ -123,6 +123,14 @@ const Room = (props) => {
         window.location.reload();
     }
 
+    function Mute(){
+        userVideo.current.srcObject.getAudioTracks().forEach(track => track.enabled = !track.enabled);
+    }
+
+    function VideoOn(){
+        userVideo.current.srcObject.getVideoTracks().forEach(track => track.enabled = !track.enabled);
+    }
+
     return (
         <div>
             <div className="container">
@@ -134,6 +142,8 @@ const Room = (props) => {
                 })}
             </div>
             
+            <button onClick={Mute} type="button" className="buttons">MUTE</button>
+            <button onClick={VideoOn} type="button" className="buttons">VIDEO</button>
             <button onClick={Exit} type="button" className="buttons">EXIT</button>
         </div>
     );
