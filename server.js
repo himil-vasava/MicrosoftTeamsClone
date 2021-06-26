@@ -6,6 +6,10 @@ const server = http.createServer(app);
 const socket = require("socket.io");
 const io = socket(server);
 const path = require("path");
+const mongoose = require('mongoose');
+const userRoutes = require("./routes/users.js");
+const cors = require("cors");
+const bodyParser = require('body-parser');
 
 const users = {};
 
@@ -49,10 +53,22 @@ io.on('connection', socket => {
 
 });
 
+app.use(bodyParser.json({ limit: '30mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, './client/build')));
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './client/build/index.html'));
 });
 
+app.use('/user', userRoutes);
+
+const CONNECTION_URL = 'mongodb+srv://himil:himil1234@cluster0.fycng.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const port = process.env.PORT || 8000;
-server.listen(port, () => console.log(`server is running on ${port}`));
+
+mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+    .then(() => server.listen(port, () => console.log(`server is running on ${port}`)))
+    .catch((error) => console.log(error));
+
+mongoose.set('useFindAndModify', false);
