@@ -35,6 +35,7 @@ const Room = (props) => {
         socketRef.current = io.connect("/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
+            //console.log(roomId);
             socketRef.current.emit("join room", roomId);
             //Receive data of all users from the server and then add them to the array
             socketRef.current.on("all users", users => {
@@ -84,6 +85,13 @@ const Room = (props) => {
                 peersRef.current = peers;
                 setPeers(peers);
             });
+
+            // peersRef.current.forEach((peer) => {
+            //     peer.peer.on("data", (data) => {
+            //         console.log(data);
+            //         document.getElementById("messages").textContent+= data +'\n';
+            //     });
+            // })
         })
     }, []);
 
@@ -131,6 +139,16 @@ const Room = (props) => {
         userVideo.current.srcObject.getVideoTracks().forEach(track => track.enabled = !track.enabled);
     }
 
+    // function SendMessage(){
+    //     console.log("send button was clicked");
+
+    //     var message = document.getElementById('message').value;
+
+    //     peersRef.current.forEach((peer) => {
+    //         peer.peer.send(message);
+    //     })
+    // }
+
     return (
         <div>
             <div className="container">
@@ -141,7 +159,12 @@ const Room = (props) => {
                     );
                 })}
             </div>
-            
+            {/* <div id="chat">
+                <pre id="messages"></pre>
+                <input id="handle" type="text" placeholder="Handle" />
+                <textarea id="message" placeholder="Message" />
+                <button onClick={SendMessage} id="send">Send</button>
+            </div> */}
             <button onClick={Mute} type="button" className="buttons">MUTE</button>
             <button onClick={VideoOn} type="button" className="buttons">VIDEO</button>
             <button onClick={Exit} type="button" className="buttons">EXIT</button>

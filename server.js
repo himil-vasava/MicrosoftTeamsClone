@@ -15,6 +15,7 @@ const users = {};
 
 const socketToRoom = {};
 
+//on connection with client
 io.on('connection', socket => {
     socket.on("join room", roomId => {
         if (users[roomId]) {
@@ -51,6 +52,14 @@ io.on('connection', socket => {
         socket.broadcast.emit('user left', socket.id);
     });
 
+    // socket.on("sending data",  (data) => {
+    //     console.log(data.message);
+    // })
+
+    // socket.on("chat", (data) => {
+    //     console.log(data.message);
+    //     io.sockets.emit('chat', data);
+    // })
 });
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
