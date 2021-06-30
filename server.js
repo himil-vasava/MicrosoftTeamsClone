@@ -57,7 +57,7 @@ io.on('connection', socket => {
     socket.on("chat", (data) => {
         const roomId = socketToRoom[socket.id];
         users[roomId].forEach((id) => {
-            io.to(id).emit('chat', data);
+            io.to(id).emit('chat', {message: data.message, name: data.name});
         })
     })
 });

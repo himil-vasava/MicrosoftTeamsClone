@@ -89,9 +89,9 @@ const Room = (props) => {
 
         //Listening to the chat event thus receiving and the rendering the message
         socketRef.current.on("connect", () => {
-            socketRef.current.on("chat", (message) => {
+            socketRef.current.on("chat", (data) => {
                 console.log(user);
-                document.getElementById('messages').textContent += user.result.name + ':' + message + '\n';
+                document.getElementById('messages').textContent += data.name + ':' + data.message + '\n';
             })
         })
     }, []);
@@ -142,9 +142,10 @@ const Room = (props) => {
 
     function SendMessage(){
         var message = document.getElementById('message').value;
+        var name = user.result.name;
 
         //Message emitted after the user clicked the send button
-        socketRef.current.emit("chat", message);
+        socketRef.current.emit("chat", {message, name});
 
         document.getElementById('message').value = '';
     }
