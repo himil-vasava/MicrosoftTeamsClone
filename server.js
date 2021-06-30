@@ -18,6 +18,7 @@ const socketToRoom = {};
 //on connection with client
 io.on('connection', socket => {
     socket.on("join room", roomId => {
+        //console.log(roomId);
         if (users[roomId]) {
             const length = users[roomId].length;
             if (length === 4) {
@@ -52,14 +53,13 @@ io.on('connection', socket => {
         socket.broadcast.emit('user left', socket.id);
     });
 
-    // socket.on("sending data",  (data) => {
-    //     console.log(data.message);
-    // })
-
-    // socket.on("chat", (data) => {
-    //     console.log(data.message);
-    //     io.sockets.emit('chat', data);
-    // })
+    //send the data or message to all users present in the room
+    socket.on("chat", (data) => {
+        const roomId = socketToRoom[socket.id];
+        users[roomId].forEach((id) => {
+            io.to(id).emit('chat', data);
+        })
+    })
 });
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }));

@@ -29,7 +29,7 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomId = props.match.params.roomId;
-
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
 
     useEffect(() => {
         socketRef.current = io.connect("/");
@@ -85,13 +85,14 @@ const Room = (props) => {
                 peersRef.current = peers;
                 setPeers(peers);
             });
+        })
 
-            // peersRef.current.forEach((peer) => {
-            //     peer.peer.on("data", (data) => {
-            //         console.log(data);
-            //         document.getElementById("messages").textContent+= data +'\n';
-            //     });
-            // })
+        //Listening to the chat event thus receiving and the rendering the message
+        socketRef.current.on("connect", () => {
+            socketRef.current.on("chat", (message) => {
+                console.log(user);
+                document.getElementById('messages').textContent += user.result.name + ':' + message + '\n';
+            })
         })
     }, []);
 
@@ -139,15 +140,14 @@ const Room = (props) => {
         userVideo.current.srcObject.getVideoTracks().forEach(track => track.enabled = !track.enabled);
     }
 
-    // function SendMessage(){
-    //     console.log("send button was clicked");
+    function SendMessage(){
+        var message = document.getElementById('message').value;
 
-    //     var message = document.getElementById('message').value;
+        //Message emitted after the user clicked the send button
+        socketRef.current.emit("chat", message);
 
-    //     peersRef.current.forEach((peer) => {
-    //         peer.peer.send(message);
-    //     })
-    // }
+        document.getElementById('message').value = '';
+    }
 
     return (
         <div>
@@ -159,12 +159,11 @@ const Room = (props) => {
                     );
                 })}
             </div>
-            {/* <div id="chat">
+            <div id="chat">
                 <pre id="messages"></pre>
-                <input id="handle" type="text" placeholder="Handle" />
                 <textarea id="message" placeholder="Message" />
                 <button onClick={SendMessage} id="send">Send</button>
-            </div> */}
+            </div>
             <button onClick={Mute} type="button" className="buttons">MUTE</button>
             <button onClick={VideoOn} type="button" className="buttons">VIDEO</button>
             <button onClick={Exit} type="button" className="buttons">EXIT</button>
