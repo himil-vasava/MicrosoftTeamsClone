@@ -127,9 +127,9 @@ const Room = (props) => {
         return peer;
     }
 
-    function Exit(){
-        window.close();
-    }
+    // function Exit(){
+    //     window.close();
+    // }
 
     function Mute(){
         userVideo.current.srcObject.getAudioTracks().forEach(track => track.enabled = !track.enabled);
@@ -181,7 +181,7 @@ const Room = (props) => {
             </div>
             <button onClick={Mute} type="button" className="buttons">MUTE</button>
             <button onClick={VideoOn} type="button" className="buttons">VIDEO</button>
-            <button onClick={Exit} type="button" className="buttons">EXIT</button>
+            {/* <button onClick={Exit} type="button" className="buttons">EXIT</button> */}
         </div>
     );
 };

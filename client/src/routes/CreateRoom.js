@@ -8,8 +8,9 @@ const CreateRoom = (props) => {
 
     function create() {
         const id = uuid();
-        const wind = window.open(`/room/${id}`, "_blank");
-        wind.focus();
+        // const wind = window.open(`/room/${id}`, "_blank");
+        // wind.focus();
+        props.history.push(`/room/${id}`);
     }
 
     return (
