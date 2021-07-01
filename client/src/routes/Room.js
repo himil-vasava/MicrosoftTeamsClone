@@ -128,8 +128,7 @@ const Room = (props) => {
     }
 
     function Exit(){
-        props.history.push(`/`);
-        window.location.reload();
+        window.close();
     }
 
     function Mute(){
@@ -150,6 +149,17 @@ const Room = (props) => {
         document.getElementById('message').value = '';
     }
 
+    function Invite(){
+        var email = document.getElementById('invite').value;
+        var link = window.location.href;
+
+        console.log(email);
+
+        socketRef.current.emit("meet", {email, link});
+
+        document.getElementById('invite').value = '';
+    }
+
     return (
         <div>
             <div className="container">
@@ -164,6 +174,10 @@ const Room = (props) => {
                 <pre id="messages"></pre>
                 <textarea id="message" placeholder="Message" />
                 <button onClick={SendMessage} id="send">Send</button>
+            </div>
+            <div>
+                <input type="email" id="invite"></input>
+                <button onClick={Invite}>Invite</button>
             </div>
             <button onClick={Mute} type="button" className="buttons">MUTE</button>
             <button onClick={VideoOn} type="button" className="buttons">VIDEO</button>

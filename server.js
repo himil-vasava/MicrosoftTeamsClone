@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const userRoutes = require("./routes/users.js");
 const cors = require("cors");
 const bodyParser = require('body-parser');
+const sgMail = require('@sendgrid/mail')
 
 const users = {};
 
@@ -60,6 +61,24 @@ io.on('connection', socket => {
             io.to(id).emit('chat', {message: data.message, name: data.name});
         })
     })
+
+    socket.on("meet", (email) => {
+        const msg = {
+            to: email.email, // Change to your recipient
+            from: 'teamsclonehimil@gmail.com', // Change to your verified sender
+            subject: 'Invite for the meeting',
+            text: 'Here is the link for the meeting. '+ email.link,
+            html: '<p><strong>Here is the link for the meeting.</strong></p> <br>'+  '<link>' + email.link + '</link>',
+          }
+          sgMail
+            .send(msg)
+            .then(() => {
+              console.log('Email sent')
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+    })
 });
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
@@ -75,9 +94,13 @@ app.use('/user', userRoutes);
 
 const CONNECTION_URL = 'mongodb+srv://himil:himil1234@cluster0.fycng.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const port = process.env.PORT || 8000;
+const SENDGRID_API_KEY = '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';
 
 mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => server.listen(port, () => console.log(`server is running on ${port}`)))
+    .then(() => {
+        server.listen(port, () => console.log(`server is running on ${port}`))
+        sgMail.setApiKey(SENDGRID_API_KEY);
+    })
     .catch((error) => console.log(error));
 
 mongoose.set('useFindAndModify', false);
