@@ -8,7 +8,9 @@ import axios from 'axios';
 const CreateRoom = (props) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const socketRef = useRef();
+    const [chat, setChat] = useState([]);
     var teamId = props.match.params.teamId;
+    var pageNumber = 5;
 
     useEffect(() => {
         socketRef.current = io.connect("/");
@@ -18,7 +20,28 @@ const CreateRoom = (props) => {
         socketRef.current.on("chatMessage", (data) => {
             document.getElementById('messages').textContent += data.name + ':' + data.message + '\n';
         })
-    })
+
+        if(user){
+            var config = {
+                method: 'post',
+                url: `https://calm-savannah-53647.herokuapp.com/teams/getChat`,
+                headers: { 'Content-Type': 'application/json' },
+                data: JSON.stringify({
+                    teamId, 
+                    pageNumber
+                }),
+            }
+            axios(config)
+                .then((res) => {
+                    var arr = res.data.result;
+                    
+                    setChat(arr);
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
+    }, [])
 
     function create() {
         const id = uuid();
@@ -62,6 +85,13 @@ const CreateRoom = (props) => {
             <div>
                 <Button component={Link} to="/" variant="contained" color="primary">Home</Button>
                 <button onClick={create}>Create room</button>
+                <div>
+                    {chat.map((item) => {
+                        return (
+                            <div>{item.sender} : {item.message}</div>
+                        )
+                    })}
+                </div>
                 <div id="chat">
                     <pre id="messages"></pre>
                     <textarea id="message" placeholder="Message" />
