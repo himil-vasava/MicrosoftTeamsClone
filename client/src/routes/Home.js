@@ -34,7 +34,7 @@ const Home = () => {
         if(user){
             var config = {
                 method: 'post',
-                url: `http://localhost:8000/teams/getTeam`,
+                url: `https://calm-savannah-53647.herokuapp.com/teams/getTeam`,
                 headers: { 'Content-Type': 'application/json' },
                 data: JSON.stringify({
                     email: user.result.email,
