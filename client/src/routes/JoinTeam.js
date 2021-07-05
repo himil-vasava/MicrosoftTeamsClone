@@ -12,7 +12,7 @@ const JoinTeam = () => {
 
         var config = {
             method: 'post',
-            url: `http://localhost:8000/teams/joinTeam`,
+            url: `https://calm-savannah-53647.herokuapp.com/teams/joinTeam`,
             headers: { 'Content-Type': 'application/json' },
             data: JSON.stringify({
                 teamId,

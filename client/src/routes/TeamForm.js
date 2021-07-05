@@ -18,7 +18,7 @@ const TeamForm = (props) => {
 
         var config = {
             method: 'post',
-            url: `http://localhost:8000/teams/createTeam`,
+            url: `https://calm-savannah-53647.herokuapp.com/teams/createTeam`,
             headers: { 'Content-Type': 'application/json' },
             data: JSON.stringify({
                 id: teamId,

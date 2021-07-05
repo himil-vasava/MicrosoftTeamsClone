@@ -38,7 +38,7 @@ const CreateRoom = (props) => {
 
         var config = {
             method: 'post',
-            url: `http://localhost:8000/teams/chatMessage`,
+            url: `https://calm-savannah-53647.herokuapp.com/teams/chatMessage`,
             headers: { 'Content-Type': 'application/json' },
             data: JSON.stringify({
                 teamId,
