@@ -25,6 +25,7 @@ const signin = async (req, res) => {
 
 const signup = async (req, res) => {
     const {email, password, confirmPassword, firstName, lastName} = req.body;
+    var teams = [];
 
     try{
         const existingUser = await User.findOne({email});
@@ -35,7 +36,9 @@ const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
-        const result = await User.create({email, password: hashedPassword, name: `${firstName} ${lastName}`});
+        const result = await User.create({email, password: hashedPassword, name: `${firstName} ${lastName}`,  teams: teams});
+
+        console.log(result);
         
         const token = jwt.sign({ email: result.email, id: result._id }, 'test', {expiresIn: "1h"});
         

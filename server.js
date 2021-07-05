@@ -8,6 +8,7 @@ const io = socket(server);
 const path = require("path");
 const mongoose = require('mongoose');
 const userRoutes = require("./routes/users.js");
+const teamRoutes = require("./routes/teams.js");
 const cors = require("cors");
 const bodyParser = require('body-parser');
 const sgMail = require('@sendgrid/mail')
@@ -79,6 +80,26 @@ io.on('connection', socket => {
               console.error(error)
             })
     })
+
+    socket.on("Team", (data) => {
+        const teamId = data.teamId;
+
+        socket.join(teamId);
+    })
+
+    socket.on("teamchat", (data) => {
+        const teamId = data.teamId;
+        const name = data.name;
+
+        io.to(teamId).emit('chatMessage', {message:data.message, name});
+    })
+});
+
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    next();
 });
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }));
@@ -91,6 +112,7 @@ app.get('*', (req, res) => {
 });
 
 app.use('/user', userRoutes);
+app.use('/teams', teamRoutes);
 
 const CONNECTION_URL = 'mongodb+srv://himil:himil1234@cluster0.fycng.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const port = process.env.PORT || 8000;
