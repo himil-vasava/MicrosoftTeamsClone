@@ -60,7 +60,6 @@ const Home = () => {
                         <Typography>{user.result.name}</Typography>
                         <Button component={Link} to="/createteam" variant="contained" color="primary">Create Team </Button>
                         <Button component={Link} to="/jointeam" variant="contained" color="primary">Join Team</Button>
-                        <Button component={Link} to="/create" variant="contained" color="primary">Start Meeting </Button>
                         <Button variant="contained" color="secondary" onClick={logout} >Logout</Button>
 
                         <div>

@@ -93,6 +93,25 @@ io.on('connection', socket => {
 
         io.to(teamId).emit('chatMessage', {message:data.message, name});
     })
+
+    socket.on("teamInvite", (email) => {
+        const msg = {
+            to: email.email, // Change to your recipient
+            from: 'teamsclonehimil@gmail.com', // Change to your verified sender
+            subject: 'Invite to join Team',
+            text: 'Here is code to join team.'+ email.teamId,
+            html: '<p><strong>Here is code to join team.</strong></p> <br>'+  '<strong>' + email.teamId + '</strong>',
+          }
+          sgMail
+            .send(msg)
+            .then(() => {
+              console.log('Email sent')
+            })
+            .catch((error) => {
+              console.error(error)
+            })
+    })
+
 });
 
 app.use((req, res, next) => {
@@ -114,14 +133,12 @@ app.get('*', (req, res) => {
 app.use('/user', userRoutes);
 app.use('/teams', teamRoutes);
 
-const CONNECTION_URL = 'mongodb+srv://himil:himil1234@cluster0.fycng.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const port = process.env.PORT || 8000;
-const SENDGRID_API_KEY = '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';
 
-mongoose.connect(CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(process.env.CONNECTION_URL, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => {
         server.listen(port, () => console.log(`server is running on ${port}`))
-        sgMail.setApiKey(SENDGRID_API_KEY);
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     })
     .catch((error) => console.log(error));
 

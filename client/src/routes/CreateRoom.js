@@ -79,12 +79,26 @@ const CreateRoom = (props) => {
             })
     }
 
+    function Invite(){
+        var email = document.getElementById('invite').value;
+
+        console.log(email);
+
+        socketRef.current.emit("teamInvite", {email, teamId});
+
+        document.getElementById('invite').value = '';
+    }
+
     return (
         <div>
         {user?(
             <div>
                 <Button component={Link} to="/" variant="contained" color="primary">Home</Button>
                 <button onClick={create}>Create room</button>
+                <div>
+                    <input type="email" id="invite"></input>
+                    <button onClick={Invite}>Invite</button>
+                </div>
                 <div>
                     {chat.map((item) => {
                         return (
