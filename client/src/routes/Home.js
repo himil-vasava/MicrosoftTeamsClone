@@ -7,6 +7,7 @@ import axios from 'axios';
 import Intro from '../components/Intro/Intro';
 import SideBar from '../components/SideBar/SideBar';
 import Card from '../components/Card/Card.js';
+import Navbar from '../components/Navbar/Navbar';
 
 const Home = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -60,9 +61,10 @@ const Home = () => {
                     <div>
                         {/* <Avatar alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
                         <Typography>{user.result.name}</Typography> */}
-                        <Button component={Link} to="/createteam" variant="contained" color="primary">Create Team </Button>
+                        <Navbar />
+                        {/* <Button component={Link} to="/createteam" variant="contained" color="primary">Create Team </Button>
                         <Button component={Link} to="/jointeam" variant="contained" color="primary">Join Team</Button>
-                        <Button variant="contained" color="secondary" onClick={logout} >Logout</Button>
+                        <Button variant="contained" color="secondary" onClick={logout} >Logout</Button> */}
                         <div style={{display:'flex'}}>
                             <SideBar teams={teams} />
 

@@ -14,12 +14,15 @@ const SideBar = ({teams}) => {
     console.log(teams);
     return (
         <div className='sidebar'>
-            <SideBarRow Icon={AddCircleOutlineOutlinedIcon} title='Create' />
-            <SideBarRow Icon={GroupAddIcon} title='Join' />
+            <a href="/createteam" style={{textDecoration: 'none',  color:'inherit'}}><SideBarRow Icon={AddCircleOutlineOutlinedIcon} title='Create' /></a>
+            <a href="/jointeam" style={{textDecoration: 'none',  color:'inherit'}}><SideBarRow Icon={GroupAddIcon} title='Join' /></a>
             <hr />
             {teams.map((team) => {
+                var url = `/teams/${team.teamId}`
                 return(
-                    <SideBarRow Icon={MeetingRoomIcon} title={team.name}/>
+                    <a href={url} style={{textDecoration: 'none',  color:'inherit'}}>
+                        <SideBarRow Icon={MeetingRoomIcon} title={team.name}/>
+                    </a>
                 )
             })}
         </div>

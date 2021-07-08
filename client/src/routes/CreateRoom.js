@@ -1,9 +1,13 @@
 import React, {useState, useRef, useEffect} from "react";
 import { v1 as uuid } from "uuid";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Button,TextField } from "@material-ui/core";
 import io from "socket.io-client";
 import axios from 'axios';
+import './CreateRoom.css';
+import Navbar from "../components/Navbar/Navbar";
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import SendIcon from '@material-ui/icons/Send';
 
 const CreateRoom = (props) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -18,7 +22,19 @@ const CreateRoom = (props) => {
         socketRef.current.emit("Team", {teamId});
 
         socketRef.current.on("chatMessage", (data) => {
-            document.getElementById('messages').textContent += data.name + ':' + data.message + '\n';
+            console.log(data,user);
+            let el=document.createElement("LI");
+            if(data.name!=user.result.name){
+                el.className="message left";
+                el.innerHTML=`<strong>${data.name} </strong>: ${data.message}`;
+            }
+            else {
+                el.className="message right";
+                el.innerHTML=`${data.message}`;
+            }
+            let parent=document.getElementById("Wise");
+            parent.appendChild(el);
+            // document.getElementById('messages').textContent += data.message + '\n';
         })
 
         if(user){
@@ -42,13 +58,6 @@ const CreateRoom = (props) => {
                 })
         }
     }, [])
-
-    function create() {
-        const id = uuid();
-        const wind = window.open(`/room/${id}`, "_blank");
-        wind.focus();
-        //props.history.push(`/room/${id}`);
-    }
 
     function SendMessage(){
         var message = document.getElementById('message').value;
@@ -93,23 +102,42 @@ const CreateRoom = (props) => {
         <div>
         {user?(
             <div>
-                <Button component={Link} to="/" variant="contained" color="primary">Home</Button>
-                <button onClick={create}>Create room</button>
-                <div>
-                    <input type="email" id="invite"></input>
-                    <button onClick={Invite}>Invite</button>
+                <Navbar room="true"/>
+                <div style={{display:'flex',marginLeft:10}}>
+                    <div>
+                        <TextField type="email" id="invite" placeholder="Invite by email"style={{backgroundColor:'#fff',paddingLeft:10}}/> 
+                        {/* <input type="email" id="invite"></input> */}
+                        <button onClick={Invite}><PersonAddIcon  /></button>
+                    </div>
                 </div>
-                <div>
-                    {chat.map((item) => {
-                        return (
-                            <div>{item.sender} : {item.message}</div>
-                        )
-                    })}
+                <div className="chat-container chat-rep">
+                    <ul className="chat">
+                        {chat.map((item) => {
+                            if(item.sender==user.result.name){
+                                return (
+                                    <li className="message right">
+                                        <p>{item.message}</p>
+                                    </li>
+                                )
+                            }else{
+                                return (
+                                    <li className="message left">
+                                        <p><strong>{item.sender}</strong> : {item.message}</p>
+                                    </li>
+                                )
+                            }
+                        })}
+                    </ul>
+                    <ul className="chat" id="Wise">
+                        {/* <li className="message right">
+                            <p id="messages"></p>
+                        </li> */}
+                    </ul>
+                    {/* <pre id="messages" className="message left"></pre> */}
                 </div>
-                <div id="chat">
-                    <pre id="messages"></pre>
-                    <textarea id="message" placeholder="Message" />
-                    <button onClick={SendMessage} id="send">Send</button>
+                <div id="chat" style={{display:'flex'}}>
+                    <textarea id="message" placeholder="Message" className="text_input" cols="100" autoFocus/>
+                    <button onClick={SendMessage} id="send">< SendIcon/></button>
                 </div>
             </div>
         ):

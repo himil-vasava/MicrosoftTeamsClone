@@ -2,6 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import './Room.css';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { TextField, Button } from "@material-ui/core";
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import SendIcon from '@material-ui/icons/Send';
 
 const Video = (props) => {
     const ref = useRef();
@@ -14,14 +20,9 @@ const Video = (props) => {
 
     return (
         <video className="styled" playsInline autoPlay ref={ref} />
+    
     );
 }
-
-
-const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2
-};
 
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
@@ -33,7 +34,7 @@ const Room = (props) => {
 
     useEffect(() => {
         socketRef.current = io.connect("/");
-        navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             //console.log(roomId);
             socketRef.current.emit("join room", roomId);
@@ -161,27 +162,51 @@ const Room = (props) => {
     }
 
     return (
-        <div>
-            <div className="container">
-                <video className ="styled" muted ref={userVideo} autoPlay playsInline />
-                {peers.map((peer) => {
-                    return (
-                        <Video key={peer.peerID} peer={peer.peer} />
-                    );
-                })}
+        <div className="main">
+            <div className="main__left">
+                <div className="container">
+                    <video className ="styled" muted ref={userVideo} autoPlay playsInline />
+                    {peers.map((peer) => {
+                        return (
+                            <Video key={peer.peerID} peer={peer.peer} />
+                        );
+                    })}
+                </div>
+                
+                <div className="main__controls">
+                    <div className="main__controls__block">
+                        <button onClick={Mute} type="button" className="main__controls__button main__mute_button volume"><VolumeOffIcon/></button>
+                        <button onClick={VideoOn} type="button" className="main__controls__button main__video_button volume"><VideocamOffIcon /></button>
+                    </div>
+                    <div>
+                        <div className="main__controls__block">
+                            <TextField type="email" placeholder="Invite by email" variant="outlined" style={{backgroundColor:"#fff"}} id="invite"/>
+                            {/* <input type="email" id="invite"></input> */}
+                            <button onClick={Invite} className="main__controls__button volume"><PersonAddIcon /></button>
+                            {/* <button onClick={Invite}>Invite</button> */}
+                        </div>   
+                    </div>
+                    <div className="main__controls__block">
+                    <button onClick={Exit} type="button" className="main__controls__button leave_meeting volume"><ExitToAppIcon /></button>
+                    </div>
+                </div>
             </div>
-            <div id="chat">
-                <pre id="messages"></pre>
-                <textarea id="message" placeholder="Message" />
-                <button onClick={SendMessage} id="send">Send</button>
+            <div className="main__right" style={{maxWidth:'20%'}}>
+                <div className="main__header">
+                    <h5>Chat</h5>
+                </div>
+                <div id="chat">
+                    <div className="main__chat_window">
+                        <pre id="messages" className="messages"></pre>
+                    </div>
+                    <div>
+                        <div className="main__message_container" style={{position:'fixed',top:665}}>
+                            <textarea id="message" placeholder="Message" cols="30" style={{padding:5}}/>
+                            <button onClick={SendMessage} id="send"><SendIcon /></button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <input type="email" id="invite"></input>
-                <button onClick={Invite}>Invite</button>
-            </div>
-            <button onClick={Mute} type="button" className="buttons">MUTE</button>
-            <button onClick={VideoOn} type="button" className="buttons">VIDEO</button>
-            <button onClick={Exit} type="button" className="buttons">EXIT</button>
         </div>
     );
 };
