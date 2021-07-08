@@ -8,6 +8,7 @@ import { Avatar, Paper, Button, Grid, Typography, Container, IconButton } from '
 import {GoogleLogin} from 'react-google-login';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {signin, signup} from '../../actions/auth';
+import useStyles from './styles';
 
 const initialState = {firstName: '', lastName: '', email: '', password: '', confirmPassword: ''}
 
@@ -17,6 +18,7 @@ const Auth = () => {
     const [formData, setFormData] = useState(initialState);
     const dispatch = useDispatch();
     const history = useHistory();
+    const classes = useStyles();
 
     const handleShowPassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword)
@@ -61,13 +63,13 @@ const Auth = () => {
 
     return (
         <div>
-            <Container component="main">
-                <Paper elevation={3}>
-                    <Avatar>
+            <Container component="main" maxWidth="xs">
+                <Paper className={classes.paper} elevation={3}>
+                    <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography>{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
-                    <form onSubmit={handleSubmit}>
+                    <Typography component="h1" variant="h5">{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
+                    <form className={classes.form} onSubmit={handleSubmit}>
                         <Grid container spacing={2}>
                             {
                                 isSignup && (
@@ -81,14 +83,14 @@ const Auth = () => {
                             <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
                             { isSignup && <Input name="confirmPassword" label="Confirm Password" handleChange={handleChange} type="password" /> }
                         </Grid>
-                        <Button type="submit" fullWidth variant="contained" color="primary">
+                        <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                             {isSignup ? 'Sign Up' : 'Sign In'}
                         </Button>
                         <br /><br />
                         <GoogleLogin 
                             clientId="39714098103-pcv2bcb1m6d8knh4894bhns2vjjutt8a.apps.googleusercontent.com"
                             render={(renderProps) => (
-                                <Button color="primary" fullWidth onClick={renderProps.onClick} startIcon={<Icon />} variant="contained" >
+                                <Button color="primary" className={classes.googleButton} fullWidth onClick={renderProps.onClick} startIcon={<Icon />} variant="contained" >
                                     Google Sign In
                                 </Button>
                             )}
