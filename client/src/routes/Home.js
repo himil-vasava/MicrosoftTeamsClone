@@ -4,6 +4,7 @@ import {useDispatch} from 'react-redux';
 import {Toolbar, Button, Typography, Avatar} from '@material-ui/core';
 import decode from 'jwt-decode';
 import axios from 'axios';
+import Intro from '../components/Intro/Intro';
 
 const Home = () => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
@@ -53,8 +54,8 @@ const Home = () => {
 
     return(
         <div>
-            <Toolbar>
                 {user?(
+                    <Toolbar>
                     <div>
                         <Avatar alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
                         <Typography>{user.result.name}</Typography>
@@ -73,14 +74,15 @@ const Home = () => {
                             })}
                         </div>
                     </div>
+                    </Toolbar>
                 ):(
                     <div>        
-                        <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
+                        {/* <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button> */}
+                        <Intro />
                     </div>
                 )
 
                 }
-            </Toolbar>
         </div>
     )
 }
