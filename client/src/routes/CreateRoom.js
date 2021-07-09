@@ -34,7 +34,6 @@ const CreateRoom = (props) => {
             }
             let parent=document.getElementById("Wise");
             parent.appendChild(el);
-            // document.getElementById('messages').textContent += data.message + '\n';
         })
 
         if(user){
@@ -133,7 +132,6 @@ const CreateRoom = (props) => {
                             <p id="messages"></p>
                         </li> */}
                     </ul>
-                    {/* <pre id="messages" className="message left"></pre> */}
                 </div>
                 <div id="chat" style={{display:'flex'}}>
                     <textarea id="message" placeholder="Message" className="text_input" cols="100" autoFocus/>

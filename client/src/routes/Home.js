@@ -59,15 +59,9 @@ const Home = () => {
         <div>
                 {user?(
                     <div>
-                        {/* <Avatar alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
-                        <Typography>{user.result.name}</Typography> */}
                         <Navbar />
-                        {/* <Button component={Link} to="/createteam" variant="contained" color="primary">Create Team </Button>
-                        <Button component={Link} to="/jointeam" variant="contained" color="primary">Join Team</Button>
-                        <Button variant="contained" color="secondary" onClick={logout} >Logout</Button> */}
                         <div style={{display:'flex'}}>
                             <SideBar teams={teams} />
-
                             <div style={{display:'flex'}}>
                                 {teams.map((team) => {
                                     var url = `/teams/${team.teamId}`
