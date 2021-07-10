@@ -1,40 +1,49 @@
-const Team = require('../models/teams.js');
-const User = require('../models/user.js');
+const Team = require("../models/teams.js");
+const User = require("../models/user.js");
 
 const joinTeam = async (req, res) => {
-    const {teamId, email} = req.body;
+  const { teamId, email } = req.body;
 
-    try{
-        const existingTeam = await Team.findOne({teamId});
+  try {
+    const existingTeam = await Team.findOne({ teamId });
 
-        if(!existingTeam) return res.status(400).json({message: "Team doesn't exist"});
-        var arr = existingTeam.members;
+    if (!existingTeam)
+      return res.status(400).json({ message: "Team doesn't exist" });
+    var arr = existingTeam.members;
 
-        arr.push(email);
-        
-        const obj = {
-            members: arr
-        }
+    arr.push(email);
 
-        const result = await Team.findOneAndUpdate({teamId}, {$set: obj}, {upsert: true, new:true});
+    const obj = {
+      members: arr,
+    };
 
-        const newTeam = await Team.findOne({teamId});
+    const result = await Team.findOneAndUpdate(
+      { teamId },
+      { $set: obj },
+      { upsert: true, new: true }
+    );
 
-        const user = await User.findOne({email});
+    const newTeam = await Team.findOne({ teamId });
 
-        var arr2 = user.teams;
+    const user = await User.findOne({ email });
 
-        arr2.push(teamId);
+    var arr2 = user.teams;
 
-        const obj2 = {
-            teams: arr2,
-        }
+    arr2.push(teamId);
 
-        const result2 = await User.findOneAndUpdate({email}, {$set: obj2}, {upsert:true, new: true});
-    }catch(error){
-        res.status(500).json({message: "Something went wrong "});
-        console.log(error);
-    }
-}
+    const obj2 = {
+      teams: arr2,
+    };
+
+    const result2 = await User.findOneAndUpdate(
+      { email },
+      { $set: obj2 },
+      { upsert: true, new: true }
+    );
+  } catch (error) {
+    res.status(500).json({ message: "Something went wrong " });
+    console.log(error);
+  }
+};
 
 module.exports.joinTeam = joinTeam;

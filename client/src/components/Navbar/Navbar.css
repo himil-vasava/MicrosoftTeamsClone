@@ -1,48 +1,48 @@
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #eee;
 }
 
 .header_logo {
-    height: 25px;
-    object-fit: contain;
-    margin-left: 10px;
+  height: 25px;
+  object-fit: contain;
+  margin-left: 10px;
 }
 
 .header_center {
-    display: flex;
-    align-items: center;
-    width: 40%;
-    border: 1px solid lightgray
+  display: flex;
+  align-items: center;
+  width: 40%;
+  border: 1px solid lightgray;
 }
 
 .header_searchbutton {
-    width: 50px !important;
-    border-color: #fafafa;
-    border-left: 1px solid lightgray;
-    color: gray;
-    cursor: pointer;
+  width: 50px !important;
+  border-color: #fafafa;
+  border-left: 1px solid lightgray;
+  color: gray;
+  cursor: pointer;
 }
 
 .header_right {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .header_icon {
-    margin-right: 12px;
+  margin-right: 12px;
 }
 
 .header_center > input {
-    flex: 1;
+  flex: 1;
 }
 
-.account{
-    padding: 6px;
+.account {
+  padding: 6px;
 }

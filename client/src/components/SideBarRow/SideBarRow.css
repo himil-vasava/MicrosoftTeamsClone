@@ -1,42 +1,42 @@
 .sidebarrow {
-    display: flex;
-    align-items: center;
-    padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
 }
 
 .sidebarrow__icon {
-    color: #606060;
-    font-size: large !important;
+  color: #606060;
+  font-size: large !important;
 }
 
 .sidebarrow__title {
-    flex: 1;
-    margin-left: 20px;
-    font-size: 15px;
-    font-weight: 500;
+  flex: 1;
+  margin-left: 20px;
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .sidebarrow:hover {
-    background-color: lightgray;
-    cursor: pointer
+  background-color: lightgray;
+  cursor: pointer;
 }
 
-.sidebarrow:hover >.sidebarrow__icon {
-    color: #210c59
+.sidebarrow:hover > .sidebarrow__icon {
+  color: #210c59;
 }
 
-.sidebarrow:hover >.sidebarrow__title {
-    font-weight: bold;
+.sidebarrow:hover > .sidebarrow__title {
+  font-weight: bold;
 }
 
 .sidebarrow.selected {
-    background-color: lightgray;
+  background-color: lightgray;
 }
 
-.sidebarrow.selected >.sidebarrow__icon {
-    color: #210c59
+.sidebarrow.selected > .sidebarrow__icon {
+  color: #210c59;
 }
 
-.sidebarrow.selected >.sidebarrow__title {
-    font-weight: bold;
+.sidebarrow.selected > .sidebarrow__title {
+  font-weight: bold;
 }
