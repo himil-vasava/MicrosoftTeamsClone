@@ -51,6 +51,7 @@ io.on("connection", (socket) => {
     });
   });
 
+  //On leaving the room the user has to be deleted from that particular room
   socket.on("disconnect", () => {
     const roomId = socketToRoom[socket.id];
     let room = users[roomId];
@@ -69,6 +70,7 @@ io.on("connection", (socket) => {
     });
   });
 
+  //Event for sending the mail to invite a user for meeting
   socket.on("meet", (email) => {
     const msg = {
       to: email.email, // Change to your recipient
@@ -91,12 +93,14 @@ io.on("connection", (socket) => {
       });
   });
 
+  //For listening if a user has joined a team and thus make him join the team
   socket.on("Team", (data) => {
     const teamId = data.teamId;
 
     socket.join(teamId);
   });
 
+  //Receive message in team
   socket.on("teamchat", (data) => {
     const teamId = data.teamId;
     const name = data.name;
@@ -104,6 +108,7 @@ io.on("connection", (socket) => {
     io.to(teamId).emit("chatMessage", { message: data.message, name });
   });
 
+  //For sending mail to invite to join a team
   socket.on("teamInvite", (email) => {
     const msg = {
       to: email.email, // Change to your recipient

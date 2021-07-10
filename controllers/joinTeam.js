@@ -17,6 +17,7 @@ const joinTeam = async (req, res) => {
       members: arr,
     };
 
+    //Update the team in which the user joined by adding to member's array
     const result = await Team.findOneAndUpdate(
       { teamId },
       { $set: obj },
@@ -35,6 +36,7 @@ const joinTeam = async (req, res) => {
       teams: arr2,
     };
 
+    //Update the user and add the team in which he joined
     const result2 = await User.findOneAndUpdate(
       { email },
       { $set: obj2 },

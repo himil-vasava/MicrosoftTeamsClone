@@ -10,6 +10,7 @@ const TeamForm = (props) => {
     e.preventDefault();
     const teamId = uuid();
 
+    //Redirect to the newly created team
     props.history.push(`/teams/${teamId}`);
 
     const teamName = document.getElementById("teamName").value;

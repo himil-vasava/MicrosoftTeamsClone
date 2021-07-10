@@ -16,6 +16,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
+  //Dispatch logout and redirect to home
   const logout = () => {
     dispatch({ type: "LOGOUT" });
 
@@ -27,6 +28,7 @@ const Home = () => {
   useEffect(() => {
     const token = user?.token;
 
+    //Check if user is logged in or not
     if (token) {
       const decodedToken = decode(token);
 
@@ -35,6 +37,7 @@ const Home = () => {
 
     setUser(JSON.parse(localStorage.getItem("profile")));
 
+    //If user is logged in then get all the teams in which he joined or created
     if (user) {
       var config = {
         method: "post",
@@ -81,7 +84,6 @@ const Home = () => {
         </div>
       ) : (
         <div>
-          {/* <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button> */}
           <Intro />
         </div>
       )}

@@ -7,6 +7,7 @@ const chatMessage = async (req, res) => {
   try {
     const existingTeam = await Team.findOne({ teamId });
 
+    //If teamId doesn't exist in the collection
     if (!existingTeam)
       return res.status(400).json({ message: "Team doesn't exist" });
     var arr = existingTeam.chat;
@@ -20,6 +21,7 @@ const chatMessage = async (req, res) => {
       chat: arr,
     };
 
+    //Insert the message and sender's name in the chat of that particular team
     const result = await Team.findOneAndUpdate(
       { teamId },
       { $set: obj },

@@ -13,6 +13,7 @@ const getTeam = async (req, res) => {
 
     var result = [];
 
+    //Get all the teams of the user and thus display them
     for await (const team of arr) {
       var requiredTeam = await Team.findOne({ teamId: team });
       result.push(requiredTeam);

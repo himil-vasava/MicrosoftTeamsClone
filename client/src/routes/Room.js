@@ -132,16 +132,19 @@ const Room = (props) => {
     return peer;
   }
 
+  //Close the tab on exit
   function Exit() {
     window.close();
   }
 
+  //If audio track enabled then disable it and vice versa
   function Mute() {
     userVideo.current.srcObject
       .getAudioTracks()
       .forEach((track) => (track.enabled = !track.enabled));
   }
 
+  //If video track enabled then disable it and vice versa
   function VideoOn() {
     userVideo.current.srcObject
       .getVideoTracks()
@@ -158,12 +161,14 @@ const Room = (props) => {
     document.getElementById("message").value = "";
   }
 
+  //Send an email to invite a user to join the meeting
   function Invite() {
     var email = document.getElementById("invite").value;
     var link = window.location.href;
 
     console.log(email);
 
+    //Meeting Link shared on the email entered
     socketRef.current.emit("meet", { email, link });
 
     document.getElementById("invite").value = "";

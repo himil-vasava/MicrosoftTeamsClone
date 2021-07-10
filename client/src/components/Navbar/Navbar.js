@@ -30,7 +30,6 @@ function Navbar({ room }) {
     const id = uuid();
     const wind = window.open(`/room/${id}`, "_blank");
     wind.focus();
-    //props.history.push(`/room/${id}`);
   }
   return (
     <div className="header">

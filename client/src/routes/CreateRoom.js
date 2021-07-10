@@ -21,6 +21,7 @@ const CreateRoom = (props) => {
 
     socketRef.current.emit("Team", { teamId });
 
+    //If a message is received then display on the screen
     socketRef.current.on("chatMessage", (data) => {
       console.log(data, user);
       let el = document.createElement("LI");
@@ -35,6 +36,7 @@ const CreateRoom = (props) => {
       parent.appendChild(el);
     });
 
+    //If user is logged in then get the chats corresponding to the team
     if (user) {
       var config = {
         method: "post",
@@ -86,6 +88,7 @@ const CreateRoom = (props) => {
       });
   }
 
+  //Send email for invite to join the team
   function Invite() {
     var email = document.getElementById("invite").value;
 

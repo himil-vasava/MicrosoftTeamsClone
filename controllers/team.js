@@ -10,7 +10,6 @@ const createTeam = async (req, res) => {
     if (existingTeam)
       return res.status(400).json({ message: "Team already exists " });
 
-    //const result = await Team.create({id, teamName});
     const team = new Team({
       name: teamName,
       teamId: id,
@@ -30,6 +29,7 @@ const createTeam = async (req, res) => {
       teams: arr2,
     };
 
+    //Create a new team and add that team to the user's collection
     const result2 = await User.findOneAndUpdate(
       { email },
       { $set: obj2 },
