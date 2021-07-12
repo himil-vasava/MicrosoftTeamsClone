@@ -3,7 +3,9 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import "./Room.css";
 import VolumeOffIcon from "@material-ui/icons/VolumeOff";
+import VolumeUpIcon from "@material-ui/icons/VolumeUp";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
+import VideocamIcon from "@material-ui/icons/Videocam";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { TextField, Button } from "@material-ui/core";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
@@ -28,6 +30,8 @@ const Room = (props) => {
   const peersRef = useRef([]);
   const roomId = props.match.params.roomId;
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const [mute, setMute] = useState(false);
+  const [videoOn, setVideoOn] = useState(false);
 
   useEffect(() => {
     socketRef.current = io.connect("/");
@@ -142,6 +146,8 @@ const Room = (props) => {
     userVideo.current.srcObject
       .getAudioTracks()
       .forEach((track) => (track.enabled = !track.enabled));
+
+    setMute(!mute);
   }
 
   //If video track enabled then disable it and vice versa
@@ -149,6 +155,8 @@ const Room = (props) => {
     userVideo.current.srcObject
       .getVideoTracks()
       .forEach((track) => (track.enabled = !track.enabled));
+
+    setVideoOn(!videoOn);
   }
 
   function SendMessage() {
@@ -197,14 +205,14 @@ const Room = (props) => {
               type="button"
               className="main__controls__button main__mute_button volume"
             >
-              <VolumeOffIcon />
+              {mute ? <VolumeOffIcon /> : <VolumeUpIcon />}
             </button>
             <button
               onClick={VideoOn}
               type="button"
               className="main__controls__button main__video_button volume"
             >
-              <VideocamOffIcon />
+              {videoOn ? <VideocamOffIcon /> : <VideocamIcon />}
             </button>
           </div>
           <div>
